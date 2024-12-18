@@ -1,15 +1,13 @@
-export type TUserName = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-};
+// export type TUserName = {
+//   firstName: string;
+//   middleName: string;
+//   lastName: string;
+// };
 
 export type TUser = {
-  name: TUserName;
+  name: string;
   email: string;
   password: string;
   role: 'admin' | 'user';
   isBlocked: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 };
