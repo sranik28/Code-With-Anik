@@ -37,5 +37,9 @@ const UserSchema = new Schema<TUser>(
   { timestamps: true }, // Automatically manage createdAt and updatedAt fields
 );
 
+
+
+
+
 // Create and export the User model
 export const User = model<TUser>('User', UserSchema);
