@@ -3,7 +3,7 @@ import { TUserRole } from '../modules/User/user.interface';
 import { CatchAsync } from '../utils/CatchAsync';
 import { AppError } from '../errors/AppErrors';
 
-const auth = (...requiredRoles: TUserRole[]) => {
+export const auth = (...requiredRoles: TUserRole[]) => {
   return CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -11,3 +11,5 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
   });
 };
+
+

@@ -1,7 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { Blog } from './blog.interface';
+import { TBlog } from './blog.interface';
 
-const BlogPostSchema: Schema = new Schema<Blog>({
+
+const BlogPostSchema: Schema = new Schema<TBlog>({
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -9,4 +10,4 @@ const BlogPostSchema: Schema = new Schema<Blog>({
 });
 
 // Create the Mongoose model
-const Blog = model<Blog>('Blog', BlogPostSchema);
+export const Blog = model<TBlog>('Blog', BlogPostSchema);
