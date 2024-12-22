@@ -34,6 +34,7 @@ const userLoginInToDB = async (payload: TLoginUser) => {
   // console.log(isPasswordMatched);
 
   const jwtPayload = {
+    email: isUserExist.email,
     _id: isUserExist._id,
     role: isUserExist.role,
   };
