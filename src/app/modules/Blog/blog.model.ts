@@ -2,10 +2,10 @@ import { model, Schema } from 'mongoose';
 import { TBlog } from './blog.interface';
 
 
-const BlogPostSchema: Schema = new Schema<TBlog>({
+const BlogPostSchema = new Schema<TBlog>({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
   isPublished: { type: Boolean, default: true },
 });
 

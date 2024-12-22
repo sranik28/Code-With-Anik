@@ -1,10 +1,13 @@
 import { z } from 'zod';
+import auth from '../../middlewares/Auth';
 
 const BlogValidationSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
-  author: z.string(),
-  isPublished: z.boolean().optional().default(true),
+  body: z.object({
+    title: z.string().nonempty('Title is required'),
+    content: z.string().nonempty('Content is required'),
+    author: z.string().optional(),
+    isPublished: z.boolean().optional().default(true),
+  }),
 });
 
 export const BlogValidation = {

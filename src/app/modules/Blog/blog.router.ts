@@ -9,7 +9,7 @@ const router = Router();
 
 router.post(
   '/',
-  auth([USER_ROLE.user]),
+  // auth([USER_ROLE.user]),
   validateRequest(BlogValidation.BlogValidationSchema),
   BlogControllers.createBlog,
 );
