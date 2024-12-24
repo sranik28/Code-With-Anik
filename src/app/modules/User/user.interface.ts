@@ -4,7 +4,7 @@
 //   lastName: string;
 // };
 
-import { USER_ROLE } from "./user.constant";
+// import { USER_ROLE } from "./user.constant";
 
 export type TUser = {
   name: string;
@@ -24,4 +24,4 @@ export type TLoginUser = {
 
 
 
-export type TUserRole = keyof typeof USER_ROLE;
+// export type TUserRole = keyof typeof USER_ROLE;
