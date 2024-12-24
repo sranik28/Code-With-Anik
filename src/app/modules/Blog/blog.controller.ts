@@ -1,9 +1,12 @@
+import { JWTuser } from '../../interface/error';
 import { CatchAsync } from '../../utils/CatchAsync';
 import { sendResponse } from '../../utils/sendResponse';
 import { BlogService } from './blog.service';
 
 const createBlog = CatchAsync(async (req, res) => {
-  const result = await BlogService.createBlogInToDB(req.body);
+  const body = req.body;
+
+  const result = await BlogService.createBlogInToDB(body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -29,17 +32,22 @@ const getSingleBlog = CatchAsync(async (req, res) => {
   });
 });
 
-// const updateBlog = CatchAsync(async (req, res) => {
-//   const result = await BlogService.updateBlogInToDB(req.params.id, req.body);
-//   sendResponse(res, {
-//     statusCode: 200,
-//     success: true,
-//     data: result,
-//   });
-// });
+const updateBlog = CatchAsync(async (req, res) => {
+  const payload = req.body;
+  const PostID = req.params.id;
+  const user = req.user as JWTuser;
+  const result = await BlogService.updateBlogInToDB(payload, PostID, user);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    data: result,
+  });
+});
 
 const deleteBlog = CatchAsync(async (req, res) => {
-  const result = await BlogService.deleteBlogFromDB(req.params.id);
+  const PostID = req.params.id;
+  const user = req.user as JWTuser;
+  const result = await BlogService.deleteBlogFromDB(PostID, user);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -51,6 +59,6 @@ export const BlogControllers = {
   createBlog,
   getAllBlogs,
   getSingleBlog,
-//   updateBlog,
+    updateBlog,
   deleteBlog,
 };

@@ -2,14 +2,20 @@ import { Types } from 'mongoose';
 import { TBlog } from './blog.interface';
 import { Blog } from './blog.model';
 import { AppError } from '../../errors/AppErrors';
-import auth from '../../middlewares/Auth';
+import { JWTuser } from '../../interface/error';
+import { User } from '../User/user.model';
 
 const createBlogInToDB = async (payload: TBlog) => {
   const result = await Blog.create(payload);
-  return result;
+  return {
+    _id: result._id,
+    title: result.title,
+    content: result.content,
+    author: result.author,
+  };
 };
 const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
-  console.log('base query', query);
+  // console.log('base query', query);
 
   const queryObj = { ...query };
 
@@ -28,7 +34,6 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
 
   const excludeField = ['search', 'sortBy', 'sortOrder'];
   excludeField.forEach((el) => delete queryObj[el]);
-
 
   // if (query?.filter) {
   //   const authorId = query.filter as string;
@@ -51,12 +56,39 @@ const getSingleBlogFromDB = async (id: string) => {
   const result = await Blog.findById(id).populate('author');
   return result;
 };
-const updateBlogInToDB = async () => {
-  const result = await Blog.find({});
-  return result;
+const updateBlogInToDB = async (
+  payload: Partial<TBlog>,
+  PostID: string,
+  user: JWTuser,
+) => {
+  const exitPost = await Blog.findById(PostID);
+  if (!exitPost) {
+    throw new AppError(404, 'This ID does not exist');
+  }
+  const authorID = exitPost.author.toString();
+  const userID = user.userID.toString();
+  if (authorID !== userID) {
+    throw new AppError(403, 'This user is not authorized');
+  }
+  const result = await Blog.findByIdAndUpdate(PostID, payload, {
+    new: true,
+  }).populate('author', 'name email');
 };
-const deleteBlogFromDB = async (id: string) => {
-  const result = await Blog.findById(id);
+const deleteBlogFromDB = async (PostID: string, user: JWTuser) => {
+  const exitPost = await Blog.findById(PostID);
+  if (!exitPost) {
+    throw new AppError(404, 'This ID does not exist');
+  }
+  const authorID = exitPost.author.toString();
+  const findUser = await Blog.findById(authorID);
+  const userID = user.userID.toString();
+  if (authorID !== userID) {
+    throw new AppError(
+      403,
+      `This user is not authorized. This post is owned by `,
+    );
+  }
+  const result = await Blog.findByIdAndDelete(PostID);
   return result;
 };
 

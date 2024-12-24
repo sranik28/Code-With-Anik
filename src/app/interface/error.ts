@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 
 
 export type TErrorSource = {
@@ -9,4 +10,9 @@ export type TErrorSource = {
     statusCode: number;
     message: string;
     errorSources: TErrorSource;
+  };
+
+  export type JWTuser = {
+    userID: Schema.Types.ObjectId;
+    role: string;
   };

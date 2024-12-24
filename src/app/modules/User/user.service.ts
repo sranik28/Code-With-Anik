@@ -7,7 +7,11 @@ import jwt from 'jsonwebtoken';
 
 const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
-  return result;
+  return {
+    _id: result._id,
+    name: result.name,
+    email: result.email,
+  }
 };
 
 const userLoginInToDB = async (payload: TLoginUser) => {
@@ -39,11 +43,11 @@ const userLoginInToDB = async (payload: TLoginUser) => {
     role: isUserExist.role,
   };
 
-  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+  const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: '100d',
   });
 
-  return accessToken;
+  return token;
 };
 
 export const UserService = {

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import auth from '../../middlewares/Auth';
+import auth from '../../middlewares/auth';
 
 const BlogValidationSchema = z.object({
   body: z.object({
